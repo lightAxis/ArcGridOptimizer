@@ -36,13 +36,16 @@ WPF는 프로젝트 이름 바꾸는게 번거로워서 그냥 냅뒀다.
 
 ## 2. 사용법
 
-Relase 빌드의 .exe 파일을 실행하면 끝이다.   
-또는 Visual Studio 2022 이상에서 소스코드를 열어 빌드 후 실행.
+[Relase 탭](https://github.com/lightAxis/ArcGridOptimizer/releases/latest)의 win-x64.zip을 다운받아 압축풀고 안의 ArcGridOptimizer.exe 파일을 실행하면 끝이다.   
+Data 폴더 안에 예시 Json 파일들도 있으니 불러와서 확인해보면 된다.  
+
+레포째로 내려받아서 Visual Studio 2022 이상에서 소스코드를 열어 빌드 후 실행해도 된다.
 
 만약 아직 .NET 8 런타임이 설치되어 있지 않다면, 알아서 최초 시작 시에 다운로드 받게 된다. 
-또는 수동으로 마소 공식 페이지 [https://dotnet.microsoft.com/en-us/download/dotnet/8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) 에서 다운로드 후 설치.  
+안돼도 수동으로 마소 공식 페이지 [https://dotnet.microsoft.com/en-us/download/dotnet/8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) 에서 다운로드 후 설치하면 된다.  
 
 이하 본인 실제 사용 예시 스크린샷들이다. 
+
 ### 2-1 젬 설정
 
 젬 설정 탭에서 젬 데이터를 입력한다.
