@@ -1,0 +1,123 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:items="clr-namespace:ArcGridOptimizer.ViewModels.Items">
+    
+    
+    <!-- 키를 주고 쓰는 방식 -->
+    <DataTemplate x:Key="CoreOptResultViewTemplate" DataType="{x:Type items:CoreOptResult}">
+        <Grid Grid.Row="2" Grid.Column="0" Margin="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="1" />
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="1" />
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Rectangle Fill="LightGray" Grid.Row="1"/>
+            <Rectangle Fill="LightGray" Grid.Row="3"/>
+            <Rectangle Fill="LightGray" Grid.Row="5"/>
+            <Rectangle Fill="LightGray" Grid.Row="7"/>
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding Path=Core.Grade, Converter={StaticResource Enum2DescCvt}}" 
+                           Margin="3"
+                           Style="{StaticResource CenterTextBlock}"
+                           HorizontalAlignment="Left">
+                    <TextBlock.Effect>
+                        <DropShadowEffect
+                            Color="{Binding Path=Core.Grade, Converter={StaticResource CoreGradeToColorCvt}}"
+                            BlurRadius="10" ShadowDepth="0"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+                <TextBlock Grid.Column="1" 
+                           Text="{Binding Path=Core.Name}" 
+                           Style="{StaticResource CenterTextBlock}"
+                           FontSize="14" FontWeight="Bold"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="의지력 : " Style="{StaticResource CenterTextBlock}"/>
+                    <TextBlock Text="{Binding Path=TotalWill}" Style="{StaticResource CenterTextBlock}"/>
+                    <TextBlock Text=" / " Style="{StaticResource CenterTextBlock}"/>
+                    <TextBlock Text="{Binding Path=Core.SupplyWill}" Style="{StaticResource CenterTextBlock}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="공급 포인트 : " Style="{StaticResource CenterTextBlock}"/>
+                    <TextBlock Text="{Binding Path=TotalPoint}" Style="{StaticResource CenterTextBlock}"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="공격력 : " Style="{StaticResource CenterTextBlock}"/>
+                    <TextBlock Text="{Binding Path=TotalAtkSum}" Style="{StaticResource CenterTextBlock}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="추가 피해 : " Style="{StaticResource CenterTextBlock}"/>
+                    <TextBlock Text="{Binding Path=TotalExtraSum}" Style="{StaticResource CenterTextBlock}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="보스 피해 : " Style="{StaticResource CenterTextBlock}"/>
+                    <TextBlock Text="{Binding Path=TotalBossSum}" Style="{StaticResource CenterTextBlock}"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="6">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="젬에 의한 딜증(%) : " Style="{StaticResource CenterTextBlock}"/>
+                    <TextBlock Text="{Binding Path=TotalScore, StringFormat={}{0:N3}}" Style="{StaticResource CenterTextBlock}"/>
+                </StackPanel>
+            </Grid>
+            <TextBlock Grid.Row="8" Text="&lt;최적 젬 조합&gt;" Style="{StaticResource CenterTextBlock}"/>
+            <DataGrid Grid.Row="9" ItemsSource="{Binding Path=GemOptResults}"
+                                  AutoGenerateColumns="False" 
+                                  CanUserDeleteRows="False"
+                                  CanUserAddRows="False"
+                                  SelectionMode="Single"
+                                  SelectionUnit="FullRow">
+                <DataGrid.Style>
+                    <Style TargetType="DataGrid" BasedOn="{StaticResource ThinDataGridStyle}">
+                        <Style.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="False">
+                                <Setter Property="SelectedItem" Value="{x:Null}"/>
+                                <Setter Property="SelectedIndex" Value="-1"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Style>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="의지력" Width="50"
+                                                    Binding="{Binding Path=RequiredWill}" IsReadOnly="True" CanUserSort="False"
+                                                    ElementStyle="{StaticResource CenterTextBlock}"/>
+                    <DataGridTextColumn Header="포인트" Width="50"
+                                                    Binding="{Binding Path=RewardPoint}" IsReadOnly="True" CanUserSort="False"
+                                                    ElementStyle="{StaticResource CenterTextBlock}"/>
+                    <DataGridTextColumn Header="특옵1" Width="*"
+                                                    Binding="{Binding Path=Property1, Converter={StaticResource GemPropToStringCvt}}" 
+                                                    IsReadOnly="True" CanUserSort="False"
+                                                    ElementStyle="{StaticResource CenterTextBlock}"/>
+                    <DataGridTextColumn Header="특옵2" Width="*"
+                                                    Binding="{Binding Path=Property2, Converter={StaticResource GemPropToStringCvt}}" 
+                                                    IsReadOnly="True" CanUserSort="False"
+                                                    ElementStyle="{StaticResource CenterTextBlock}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

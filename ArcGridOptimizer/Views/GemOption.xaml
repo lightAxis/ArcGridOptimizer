@@ -1,0 +1,127 @@
+﻿<Window x:Class="ArcGridOptimizer.Views.GemOption"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ArcGridOptimizer.Views"
+        xmlns:local_vm="clr-namespace:ArcGridOptimizer.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local_vm:GemOptionMockViewModel, IsDesignTimeCreatable=True}"
+        Title="{Binding Path=Title}" Height="300" Width="400" MinHeight="200" MinWidth="350">
+    <Window.Resources>
+        <Style TargetType="TextBox" x:Key="TextBoxStyle">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="WhiteSmoke">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="저장" Width="50" Margin="3"
+                    Command="{Binding Path=onApplyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                    ToolTip="현재 세팅값을 저장합니다. 변경 사항이 최적화 과정에 반영됩니다."/>
+            <TextBlock Grid.Column="1"
+                   Text="젬 특옵 레벨별 딜증(%)" 
+                   FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Grid.Column="2" Content="초기화" Width="50" Margin="3"
+                    Command="{Binding Path=onResetCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                    ToolTip="포셔 유튜브에 나오는 값으로 되돌립니다"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                       Text="공격력" FontSize="14" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Lv. 1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Lv. 2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Lv. 3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Lv. 4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Lv. 5" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=AtkGains[0]}"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=AtkGains[1]}"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=AtkGains[2]}"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=AtkGains[3]}"/>
+            <TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=AtkGains[4]}"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                       Text="추가 피해" FontSize="14" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Lv. 1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Lv. 2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Lv. 3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Lv. 4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Lv. 5" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=ExtraDmgGains[0]}"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=ExtraDmgGains[1]}"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=ExtraDmgGains[2]}"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=ExtraDmgGains[3]}"/>
+            <TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=ExtraDmgGains[4]}"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                       Text="보스 피해" FontSize="14" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Lv. 1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Lv. 2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Lv. 3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Lv. 4" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Lv. 5" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="3"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=BossDmgGains[0]}"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=BossDmgGains[1]}"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=BossDmgGains[2]}"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=BossDmgGains[3]}"/>
+            <TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource TextBoxStyle}" Text="{Binding Path=BossDmgGains[4]}"/>
+        </Grid>
+    </Grid>
+</Window>

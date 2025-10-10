@@ -1,0 +1,232 @@
+﻿<Window x:Class="ArcGridOptimizer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ArcGridOptimizer"
+        xmlns:local_vm="clr-namespace:ArcGridOptimizer.ViewModels"
+        xmlns:local_enum="clr-namespace:ArcGridOptimizer.Enums"
+        xmlns:local_cvt="clr-namespace:ArcGridOptimizer.Cvts"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local_vm:MainWindowMockViewModel, IsDesignTimeCreatable=True}"
+        Title="{Binding Title}" Height="600" Width="800">
+
+    <Window.Resources>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.ColumnSpan="2">
+            <TabItem Header="젬 설정" ToolTip="젬 리스트 설징 및 젬 특옵 별 딜증가량 세부조정">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight" Grid.Row="0" Grid.Column="0" Margin="3,3,3,3" Grid.ColumnSpan="2">
+                        <Button Content="+" Command="{Binding Path=onAddGemCommand}" Margin="3" Width="40" ToolTip="젬추"/>
+                        <Button Content="↑" Command="{Binding Path=onMoveGemUpCommand}"  Margin="3" Width="40" ToolTip="젬 한칸 위로 올리기"/>
+                        <Button Content="↓" Command="{Binding Path=onMoveGemDownCommand}" Margin="3" Width="40" ToolTip="젬 한칸 아래로 내리기"/>
+                        <Button Content="복사" Command="{Binding Path=onCopyGemCommand}" Margin="3" Width="60" ToolTip="젬복"/>
+                        <Button Content="제거" Command="{Binding Path=onRemoveGemCommand}"  Margin="3" Width="60" ToolTip="젬컷"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Row="0" Grid.Column="0" Margin="3,3,3,3" Grid.ColumnSpan="2">
+                        <Button Content="젬 불러오기" Margin="3" Width="100" Command="{Binding Path=onGemSetLoadCommand}" ToolTip="파일로부터 젬 리스트를 불러옵니다"/>
+                        <Button Content="젬 저장" Margin="3" Width="100" Command="{Binding Path=onGemSetSaveCommand}" ToolTip="현재 젬 리스트를 별도 파일로 저장합니다"/>
+                        <Button Content="특옵 설정" Margin="3" Width="100" ToolTip="젬 특옵 종류별 딜증 (%)를 조정합니다. 실제와 비슷할수록 최적화 결과가 정확하게 나옵니다"
+                                Command="{Binding Path=onGemOptionConfigCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" />
+                    </StackPanel>
+                    <DataGrid Grid.Row="1" Grid.Column="0" Style="{StaticResource ResourceKey=ThinDataGridStyle}"
+                        ItemsSource="{Binding Gems}"
+                        SelectedItem="{Binding SelectedGem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        RowHeight="32" SelectedIndex="{Binding Path=SelectedGemIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="필요 의지력"
+                          Binding="{Binding RequiredWill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          ElementStyle="{StaticResource CenterTextBlock}"
+                          EditingElementStyle="{StaticResource CenterTextBox}"/>
+
+                            <DataGridTextColumn Header="공급 포인트"
+                          Binding="{Binding RewardPoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          ElementStyle="{StaticResource CenterTextBlock}"
+                          EditingElementStyle="{StaticResource CenterTextBox}"/>
+
+                            <!-- 특옵1 종류: 보기/편집 템플릿 모두 가운데 정렬 -->
+                            <DataGridTemplateColumn Header="특옵1 종류">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Style="{StaticResource SlimComboBox}" ItemsSource="{Binding Source={StaticResource GemPropertyValues}}" 
+                                                  SelectedItem="{Binding Property1.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Converter={StaticResource Enum2DescCvt}}" TextAlignment="Center" VerticalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="특옵1 값" 
+                                                Binding="{Binding Property1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                ElementStyle="{StaticResource CenterTextBlock}"
+                                                EditingElementStyle="{StaticResource CenterTextBox}"/>
+
+                            <!-- 특옵2 종류 -->
+                            <DataGridTemplateColumn Header="특옵2 종류">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Style="{StaticResource SlimComboBox}"
+                                                  ItemsSource="{Binding Source={StaticResource GemPropertyValues}}"
+                                                  SelectedItem="{Binding Property2.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Converter={StaticResource Enum2DescCvt}}"
+                                                               TextAlignment="Center" VerticalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="특옵2 값"
+                                                Binding="{Binding Property2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                ElementStyle="{StaticResource CenterTextBlock}"
+                                                EditingElementStyle="{StaticResource CenterTextBox}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="코어 설정" ToolTip="최적화를 진행할 코어 세부사항 세팅">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="3">
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" FlowDirection="RightToLeft" Margin="3">
+                        <Button Content="코어 불러오기" Command="{Binding Path=onCoreSetLoadCommand}" Margin="3" Width="100"
+                                ToolTip="코어 세팅 파일로부터 불러옵니다."/>
+                        <Button Content="코어 저장" Command="{Binding Path=onCoreSetSaveCommand}" Margin="3" Width="100"
+                                ToolTip="현재 코어 세팅을 파일로 저장합니다."/>
+                    </StackPanel>
+                    <Rectangle Fill="LightGray" Grid.Row="1"/>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle Fill="LightGray" Grid.Column="2" Grid.RowSpan="2"/>
+                        <Rectangle Fill="LightGray" Grid.Column="5" Grid.RowSpan="2"/>
+                        <Button Grid.Column="0" Grid.Row="0" Content="+" Margin="3" Command="{Binding Path=onAddCoreCommand}" CommandParameter="0" ToolTip="코어 추가"/>
+                        <Button Grid.Column="1" Grid.Row="0" Content="-" Margin="3" Command="{Binding Path=onRemoveCoreCommand}" CommandParameter="0" ToolTip="코어 제거"/>
+                        <ContentControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+                                        Content="{Binding Cores[0]}"
+                                        ContentTemplate="{StaticResource CoreEditorTemplate}"
+                                        Style="{StaticResource ContentControl_HideWhenContentNull}"/>
+                        <Button Grid.Column="3" Grid.Row="0" Content="+" Margin="3" Command="{Binding Path=onAddCoreCommand}" CommandParameter="1" ToolTip="코어 추가"/>
+                        <Button Grid.Column="4" Grid.Row="0" Content="-" Margin="3" Command="{Binding Path=onRemoveCoreCommand}" CommandParameter="1" ToolTip="코어 제거"/>
+                        <ContentControl Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2"
+                                        Content="{Binding Cores[1]}"
+                                        ContentTemplate="{StaticResource CoreEditorTemplate}"
+                                        Style="{StaticResource ContentControl_HideWhenContentNull}"/>
+                        <Button Grid.Column="6" Grid.Row="0" Content="+" Margin="3" Command="{Binding Path=onAddCoreCommand}" CommandParameter="2" ToolTip="코어 추가"/>
+                        <Button Grid.Column="7" Grid.Row="0" Content="-" Margin="3" Command="{Binding Path=onRemoveCoreCommand}" CommandParameter="2" ToolTip="코어 제거"/>
+                        <ContentControl Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="2"
+                                        Content="{Binding Cores[2]}"
+                                        ContentTemplate="{StaticResource CoreEditorTemplate}"
+                                        Style="{StaticResource ContentControl_HideWhenContentNull}"/>
+
+
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="최적화" ToolTip="최적화 진행 및 결과 확인">
+                <Grid Margin="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Margin="3">
+                        <Button Content="최적화 시작" Command="{Binding Path=onOptimizeStartCommand}" Margin="3" Width="100" 
+                                ToolTip="주어진 젬 설정 &amp; 옵션별 딜 증가량 &amp; 코어 설정 값을 사용하여 딜 증가량을 최대화 하는 젬 배치를 계산합니다."/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" FlowDirection="RightToLeft" Margin="3">
+                        <Button Content="결과 불러오기" Command="{Binding Path=onOptResultLoadCommand}" Margin="3" Width="100"/>
+                        <Button Content="결과 저장" Command="{Binding Path=onOptResultSaveCommand}" Margin="3" Width="100"/>
+                    </StackPanel>
+                    <Rectangle Fill="LightGray" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"/>
+                    <Rectangle Fill="LightGray" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5"/>
+                    <Rectangle Fill="LightGray" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"/>
+                    <Rectangle Fill="LightGray" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2"/>
+                    <ContentControl Grid.Row="2" Grid.Column="0"
+                                    Content="{Binding Path=OptResult.CoreResults[0]}"
+                                    ContentTemplate="{StaticResource CoreOptResultViewTemplate}"
+                                    Style="{StaticResource ContentControl_HideWhenContentNull}"/>
+                    <ContentControl Grid.Row="2" Grid.Column="2"
+                                    Content="{Binding Path=OptResult.CoreResults[1]}"
+                                    ContentTemplate="{StaticResource CoreOptResultViewTemplate}"
+                                    Style="{StaticResource ContentControl_HideWhenContentNull}"/>
+                    <ContentControl Grid.Row="2" Grid.Column="4"
+                                    Content="{Binding Path=OptResult.CoreResults[2]}"
+                                    ContentTemplate="{StaticResource CoreOptResultViewTemplate}"
+                                    Style="{StaticResource ContentControl_HideWhenContentNull}"/>
+                    <StackPanel Orientation="Horizontal" Margin="3" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3">
+                        <TextBlock Text="공격력 Lv :" Style="{StaticResource CenterTextBlock}" Margin="3"/>
+                        <TextBlock Text="{Binding Path=OptResult.TotalAtkSum, Mode=OneWay}" Style="{StaticResource CenterTextBlock}" Margin="3" Width="50" TextAlignment="Left"/>
+                        <TextBlock Text="추가 피해 Lv :" Style="{StaticResource CenterTextBlock}" Margin="3"/>
+                        <TextBlock Text="{Binding Path=OptResult.TotalExtraSum, Mode=OneWay}" Style="{StaticResource CenterTextBlock}" Margin="3" Width="50" TextAlignment="Left"/>
+                        <TextBlock Text="보스 피해 Lv :" Style="{StaticResource CenterTextBlock}" Margin="3"/>
+                        <TextBlock Text="{Binding Path=OptResult.TotalBossSum, Mode=OneWay}" Style="{StaticResource CenterTextBlock}" Margin="3" Width="50" TextAlignment="Left"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="디버그" Visibility="Collapsed">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" MinWidth="300"/>
+                        <ColumnDefinition Width="*" MinWidth="300"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GridSplitter Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Width="5" HorizontalAlignment="Right" VerticalAlignment="Stretch" Background="Gray"/>
+                    <Button Content="디버그1" Margin="3" Grid.Column="0" Grid.Row="0" Command="{Binding Path=onDebug1Command}"/>
+                    <Button Content="디버그2" Margin="3" Grid.Column="1" Grid.Row="0" Command="{Binding Path=onDebug2Command}"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
