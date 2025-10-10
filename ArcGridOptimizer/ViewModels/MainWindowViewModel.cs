@@ -64,7 +64,7 @@ namespace ArcGridOptimizer.ViewModels
 
         public MainWindowViewModel(Models.Opt.ArcgridCpSat optimizer)
         {
-            Title = "아크 그리드 최적화 v1.1";
+            Title = "아크 그리드 최적화 v1.0.1";
             _optimizer = optimizer;
 
             Models.JsonFileIO.CheckAndCreateDataDirs();
