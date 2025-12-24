@@ -21,6 +21,8 @@ namespace ArcGridOptimizer.Enums
 
     public enum eCoreEffectLevelGainType
     {
+        [Description("없음")]
+        None = 0,
         [Description("낮음")]
         Low = 1,
         [Description("중간")]

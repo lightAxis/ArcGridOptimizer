@@ -38,6 +38,7 @@ namespace ArcGridOptimizer.Params
 
         public static Dictionary<eCoreEffectLevelGainType, double> CoreEffLevelGain = new Dictionary<eCoreEffectLevelGainType, double>()
         {
+            {eCoreEffectLevelGainType.None, 0.0 },
             {eCoreEffectLevelGainType.Low, 100.0 },
             {eCoreEffectLevelGainType.Medium, 110.0 },
             {eCoreEffectLevelGainType.High, 120.0 },
